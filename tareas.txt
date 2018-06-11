@@ -1,0 +1,86 @@
+TAREAS:
+
+En http://localhost/manitos/fichasocial: 
+	1. Calcular automatimente el codigo del niño al cambiar el select control centro infantil
+	2. Calle/avenida/#: disgregar en Zona: Calle: y Numero:
+	X 3. Calcular automaticamente la edad del familiar agregado
+	4. Para peso y talla validar los campos con coma decimal(2 decimales) y sin separador de miles 15549,52 
+	5. Revisar los reportes de "cuadro-signos-vitales/reports"
+
+------------------------------------------------------------------------------------
+1. sacar una copia de toda la tabla en formato text
+2. concatenar los nombre y apallidos en una sola celda
+3. "revisar" los datos duplicados
+4. buscar posibles errores en las columas que correspondenden escala, nutricion y proteccion
+4.1. ordenar la nueva lista por cim, paterno materno, nombres
+4.2. reemplazar puntos por comas
+5. comparar la tabla datos nino con la tabla del mes que se esta procesando para encontrar niños nuevos 
+y antiguos.
+6. asignar sus IDs a los niños antiguos y separar la lista de nuevos niños
+7. con la lista de los niños antiguos que ya tienen sus IDs, preparar (REVISAR DE NUEVO posibles herrores ), procesar e isertar sus datos en las tablas escala, nutricion y proteccion
+8. utilizar la consulta para verificar los ultimos IDs engresados por CIM
+8. asignar a la lista de niños nuevo sus IDs con ayuda de la consulta que retorna los ultimos ids incertados por CIM
+9. insertar el la tabla datosnino los datos de los nuevos niños
+10. con la lista de los niños NUEVOS que ya tienen sus IDs, preparar (REVISAR DE NUEVO posibles herrores ), procesar e isertar sus datos en las tablas escala, nutricion y proteccion
+z871e70c0c0b63aa228
+z871e70c0b63aa228 
+
+/*-----------------*/
+
+cargar los memos en contra al insertar el ci de alguien
+
+Exp. Lab. ESP. Tiempo en meses. despues de cargar los datos tomar el maximo y en funcion a el promediar el resto
+Exp. Lab. GEN. Tiempo en meses. despues de cargar los datos tomar el maximo y en funcion a el promediar el resto
+revisar la hoja 1 de Planilla
+
+
+
+En Especual Mururata todos son becados por que el aporte es 50 bs. que los paga la Iglesia
+En Los Pocitos las salas se encuentra sin puertas
+
+
+67315678
+3280.80
+4101.4
+24 d
+
+
+=SIFECHA(H908;AB908;"y")
+
+select d.paterno,d.materno,d.nombres,d.id_nino,d.id_cim,c.nombre from datosnino d, cim c 
+where d.id_cim=c.id_cim order by c.nombre
+
+
+select id_nino,paterno,materno,nombres,fecha_nacimiento
+from datosnino order by paterno,materno,nombres asc
+
+
+
+select distinct(c.nombre), (select count(*) from datosnino d1 where d1.id_cim=c.id_cim ) cantidad 
+,c.id_cim, (
+select 
+max(cast((case length(d2.id_nino)-length(d2.id_cim) 
+when 2 then substring(d2.id_nino,-1,1)
+when 3 then substring(d2.id_nino,-2,2)
+when 4 then substring(d2.id_nino,-3,3)
+when 5 then substring(d2.id_nino,-4,4)
+when 6 then substring(d2.id_nino,-5,5)
+end) as signed)) 
+from datosnino d2 
+where d2.id_cim=c.id_cim
+ )
+ mayor from  cim c  order by c.nombre
+
+
+
+select concat(d.paterno,' ',d.materno, ' ', d.nombres)ncompleto, d.id_nino,c.nombre as CIM,d.id_cim from datosnino d, cim c
+where d.id_cim=c.id_cim order by ncompleto asc
+
+
+
+
+-- REEMPLAZAR . POR , EN LOS CAMPOS DE TALLA Y PESO EN DATOSNINO
+-- REEMPLAZAR . POR , EN LOS CAMPOS DE TALLA Y PESO EN ESCALA
+
+
+

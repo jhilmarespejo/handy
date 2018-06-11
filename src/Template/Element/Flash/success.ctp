@@ -1,0 +1,1 @@
+<div id='success-bar' class="alert alert-success text-center" onclick="$('#success-bar').fadeOut(4000);"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<?= h($message) ?></div>
