@@ -61,7 +61,7 @@ class CuadroSignosVitalesController extends AppController
 			//$datosmarzo = $this->Marzo->find()->select(['fecha_nacimiento', 'anios', 'meses', 'peso', 'talla', 'fecha_registro']);
 
 
-			//sacar esta informacion de la tabala del mes anterior
+			//JE: get this information from the table of month past
 			$this->loadmodel('Datosnino');
 			$datosNino = $this->Datosnino->find()->select(['id_nino', 'paterno', 'materno', 'nombres', 'id_nino', 'fecha_nacimiento','sexo','sala','edad_nino'])->where(['id_nino' => $id_nino])->first();
 

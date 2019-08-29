@@ -131,13 +131,13 @@ $datoNino = $datosNino[0][0];
 				<tbody>
 					<tr>
 						<td>PESO</td>
-						<td class="p-anterior">10000</td>
+						<td id="p-anterior">10000</td>
 						<td><?php echo $this->Form->input('record.peso', ['label' => false, 'escape' => false, 'class' => 'seventy', 'type' => 'text'] ); ?></td>
 						<td> Gramos</td>
 					</tr>
 					<tr>
 						<td>TALLA</td>
-						<td class="t-anterior">120.5</td>
+						<td id="t-anterior">120.5</td>
 						<td><?php echo $this->Form->input('record.talla', ['label' => false, 'class' => 'seventy', 'type' => 'text'] ); ?></td>
 						<td> Cent&iacute;metros</td>
 					</tr>
@@ -180,7 +180,7 @@ $datoNino = $datosNino[0][0];
 	</div>
 	<div class="group2 col-xs-12 col-sm-6 col-md-6 col-lg-6">
 		<fieldset>
-			<legend>V. Vacunas, vitaminas y suplementos </legend>
+			<legend>V. Micronutrientes </legend>
 			<label>Vacunas al día</label>
 			<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">	
 				<?php $esq = [[ 'text' => '', 'value' => '', 'selected', 'disabled'], [ 'text' => 'Si', 'value' => 'Si' ],[ 'text' => 'No', 'value' => 'No']];	
@@ -289,26 +289,46 @@ $datoNino = $datosNino[0][0];
 </div>
 <script type="text/javascript" language="javascript">
 $(document).ready(function() {
+
+
 	$('input#record-peso').on('focusout', function(e){
-		var p_anterior = $(this).parents('td').siblings('td.p-anterior').text();
+		var p_anterior = $('td#p-anterior').text();
 		if( $(this).val() < p_anterior - 500 ){
 			alert('¡¡¡ El peso actual es mucho menor al peso anterior !!!');
 			$(this).addClass('alert-danger');
+			$('input#record-peso').focus();
 		} else {
 			$(this).removeClass('alert-danger');
 		}
-
 	});
 	$('input#record-talla').on('focusout', function(e){
-		var t_anterior = $(this).parents('td').siblings('td.t-anterior').text();
+		var t_anterior = $('td#t-anterior').text();
 		if( parseFloat($(this).val()) < t_anterior ){
 			alert('¡¡¡ El talla actual es menor a la talla anterior !!!');
 			$(this).addClass('alert-danger');
 		} else {
 			$(this).removeClass('alert-danger');
 		}
-
 	});
+
+	$('input#record-peso').on('focusin', function(e){
+		var t_anterior = $('td#t-anterior').text();
+		if( parseFloat($('input#record-talla').val()) < t_anterior ){
+			$('input#record-talla').focus();
+		}
+	});
+	$('input#record-talla').on('focusin', function(e){
+		var p_anterior = $('td#p-anterior').text();
+		if( $('input#record-peso').val() < p_anterior - 500 ){
+			$('input#record-peso').focus();
+		}
+	});
+
+	$('input#record-peso, input#record-talla').blur(function(event) {
+		if( $('input#record-peso').val() == "" && $('input#record-talla').val()) = "" ){
+		
+	});
+
 	$('input#record-peso').on('keyup', function(e){
 		this.value = (this.value + '').replace(/[^0-9]/g, '');
 		if (this.value.length > 5) {
@@ -341,3 +361,25 @@ $(document).ready(function() {
 	
 } );
 </script>
+
+<!--
+{
+    "mayo": 
+    [
+         {
+            "Lun-25":"P",
+            "Mar-26":"F",
+            "Mie-27":"R",
+            "Jue-28":"D",
+            "Vie-29":"M",
+        }
+    ],
+}-->
+
+
+
+ 		OriginalNameTextBox.Text = ""
+        ConventionalNameTextBox.Text = ""
+        AgeTextBox.Text, SexCombotBox.Text = ""
+        HomeTextBox.Text = ""
+        BirthDateDateTimePicker.Text = ""
